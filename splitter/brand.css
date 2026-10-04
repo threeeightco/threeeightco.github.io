@@ -1,0 +1,5 @@
+/* Splitter brand: black and white, like the icon. */
+:root {
+  --accent: var(--ink);
+  --shot-radius: 32px;
+}

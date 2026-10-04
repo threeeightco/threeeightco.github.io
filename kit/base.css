@@ -1,0 +1,75 @@
+/* landing-kit base. Reset plus layout primitives. Uses only tokens. */
+
+*, *::before, *::after { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; }
+body {
+  margin: 0;
+  font: 400 var(--t-body)/1.5 var(--font);
+  color: var(--ink);
+  background: var(--paper);
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+img { max-width: 100%; display: block; }
+a { color: inherit; }
+h1, h2, h3, p, ul, dl { margin: 0; }
+
+/* Page container: 16px gutters on phones */
+.page { width: 100%; max-width: var(--wide); margin: 0 auto; padding: 0 var(--s3); }
+.measure { max-width: var(--measure); }
+
+/* Nav: icon, name, download */
+.nav { display: flex; align-items: center; justify-content: space-between; gap: var(--s3); padding: var(--s3) 0; }
+.nav-brand { display: flex; align-items: center; gap: var(--s2); font-weight: 600; text-decoration: none; }
+.nav-brand img { width: 32px; height: 32px; border-radius: 8px; }
+
+/* Text styles */
+.display {
+  font-size: var(--t-display);
+  font-weight: 700;
+  line-height: 1;
+  letter-spacing: var(--display-tracking);
+  text-wrap: balance;
+}
+.title { font-size: var(--t-title); font-weight: 700; line-height: 1.1; letter-spacing: -0.02em; text-wrap: balance; }
+.lede { color: var(--muted); text-wrap: pretty; }
+.label { font-size: var(--t-label); font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); }
+
+/* Hero */
+.hero { background: var(--hero-bg); color: var(--hero-ink); padding: var(--s7) 0 var(--s6); }
+.hero > .page > * + * { margin-top: var(--s4); }
+
+/* Button */
+.button {
+  display: inline-flex; align-items: center; gap: var(--s2);
+  padding: 12px 22px; border-radius: var(--radius);
+  background: var(--accent); color: var(--paper);
+  font-weight: 600; font-size: 16px; text-decoration: none;
+}
+.button:hover { opacity: 0.85; }
+
+/* Feature grid: small header + a sentence or two */
+.features { display: grid; gap: var(--s5) var(--s4); grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); }
+.feature h3 { font-size: 17px; font-weight: 700; margin-bottom: var(--s1); }
+.feature p { color: var(--muted); font-size: 16px; }
+
+/* Shot: an image, or a labelled placeholder at the right aspect ratio */
+.shot {
+  display: grid; place-items: center;
+  border-radius: var(--shot-radius);
+  background: var(--surface);
+  color: var(--muted); font: 500 var(--t-label)/1 var(--mono); letter-spacing: 0.06em; text-transform: uppercase;
+  overflow: hidden;
+}
+.shot-phone { aspect-ratio: 9 / 19.5; width: min(300px, 70%); }
+.shot-widgets { aspect-ratio: 16 / 10; width: 100%; }
+.shot-wide { aspect-ratio: 16 / 9; width: 100%; }
+
+/* Band: full-width section with an alternate background */
+.band { background: var(--surface); }
+.section { padding: var(--s7) 0; }
+
+/* Footer: support, privacy, copyright */
+.footer { border-top: 1px solid var(--line); padding: var(--s5) 0 var(--s6); font-size: 15px; color: var(--muted); }
+.footer .page { display: flex; flex-wrap: wrap; gap: var(--s2) var(--s4); justify-content: space-between; }
+.footer a { color: var(--ink); }
