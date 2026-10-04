@@ -66,14 +66,14 @@
      Light-mode plates and text as the app draws them, on a faded glass panel for the page. */
   .widgets { display: grid; grid-template-columns: 1fr 1fr; gap: 5.4cqi; }
   .wcell { display: grid; }
-  .widget { position: relative; z-index: 2; width: 100%; aspect-ratio: 1 / 0.88; display: grid; grid-template-columns: 1fr 1fr; grid-template-rows: auto 1fr; align-items: center;
-    background: rgba(234, 234, 234, 0.42); border-radius: 5.6cqi; padding: 3.6cqi 1.2cqi 1.6cqi;
+  .widget { position: relative; z-index: 2; width: 100%; display: grid; grid-template-columns: 1fr 1fr; grid-template-rows: auto auto; row-gap: 5.3cqi; align-items: start;
+    background: rgba(234, 234, 234, 0.42); border-radius: 5.6cqi; padding: 3.6cqi 1.2cqi 3.4cqi;
     -webkit-backdrop-filter: blur(16px) saturate(1.5); backdrop-filter: blur(16px) saturate(1.5);
     box-shadow: inset 0 1px 0 rgba(255,255,255,0.45), inset 0 0 0 0.5px rgba(255,255,255,0.3), 0 20px 50px rgba(0,0,0,0.35); }
   /* The title the owner typed, top left, with the refresh button opposite: as the app draws it. */
   .wtitle { grid-column: 1 / -1; align-self: start; display: flex; align-items: center; justify-content: space-between;
     padding-inline: 2.4cqi; font-size: 3.8cqi; font-weight: 600; color: #000; text-align: left; }
-  .wtitle svg { width: 1.45em; height: 1.45em; padding: 0.3em; border-radius: 50%; background: rgba(255,255,255,0.8); stroke: #1c1c1e; box-shadow: 0 1px 2px rgba(0,0,0,0.12); fill: none; stroke-width: 2.2; stroke-linecap: round; }
+  .wtitle svg { width: 1.45em; height: 1.45em; padding: 0.3em; border-radius: 50%; background: rgba(255,255,255,0.4); stroke: #1c1c1e; box-shadow: 0 1px 2px rgba(0,0,0,0.08); fill: none; stroke-width: 2.2; stroke-linecap: round; }
   .widget .plate { background: var(--plate); box-shadow: inset 0 0 0 0.5px rgba(0,0,0,0.06), 0 1.5px 3px rgba(0,0,0,0.16); }
   .widget .plate img { width: 56%; }
   .widget .app { color: #000; }
