@@ -1,0 +1,233 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Splitter: one badge per account</title>
+<meta name="description" content="Splitter puts a separate unread badge for each Gmail inbox and Slack workspace on your iPhone Home Screen, grouped into widgets you name.">
+<meta property="og:title" content="Splitter">
+<meta property="og:description" content="One badge per account. Separate unread badges for each Gmail inbox and Slack workspace, as iPhone widgets.">
+<meta property="og:image" content="https://threeeightco.github.io/splitter/assets/icon.png">
+<meta name="theme-color" content="#050506">
+<link rel="icon" href="assets/icon.png">
+<link rel="apple-touch-icon" href="assets/icon.png">
+<link rel="stylesheet" href="../kit/tokens.css">
+<link rel="stylesheet" href="../kit/base.css">
+<link rel="stylesheet" href="brand.css">
+<style>
+  /* Always night. The page is a phone; the badges it splits float around it. */
+  :root { color-scheme: dark; --ink: #f2f2f4; --paper: #050506; --muted: #8e8e96; --line: #222226; --surface: #111114;
+    --badge: #ff3b30; --widget: #1c1c1e; --plate: #38383a; --display-tracking: -0.04em; }
+
+  .stage { position: relative; overflow: hidden; padding-top: var(--s2); container-type: inline-size;
+    background: radial-gradient(50% 40% at 50% 45%, rgba(70, 90, 140, 0.22), transparent 70%), var(--paper); }
+  .stage .nav { position: relative; z-index: 3; }
+  /* Apple's badge, unmodified: at least 40px tall, with a quarter of its height clear on every side. */
+  .store-badge { display: block; }
+  .store-badge img { height: 52px; width: auto; }
+  @media (max-width: 560px) { .store-badge img { height: 44px; } }
+
+  /* The phone, at iPhone proportions: everything inside is sized in screen widths (cqi of .screen),
+     so a 60pt icon on a 393pt screen stays about 15% of the width at any size. */
+  .phone { --w: min(480px, 100cqi - 32px); position: relative; z-index: 2; width: var(--w); margin: var(--s3) auto 0;
+    border-radius: calc(var(--w) * 0.165) calc(var(--w) * 0.165) 0 0; padding: calc(var(--w) * 0.028) calc(var(--w) * 0.028) 0;
+    background: linear-gradient(180deg, #3a3b40, #1a1b1e 30%, #111214);
+    box-shadow: inset 0 0 0 1px rgba(255,255,255,0.08), 0 -20px 80px rgba(80, 100, 160, 0.12); }
+  .screen { position: relative; container-type: inline-size; overflow: hidden;
+    border-radius: calc(var(--w) * 0.14) calc(var(--w) * 0.14) 0 0; padding: 2.8% 0 15%;
+    background: linear-gradient(180deg, #21324f 0%, #152238 38%, #0b111c 70%, #050506 100%);
+    display: flex; flex-direction: column; align-items: center; text-align: center; }
+
+  /* A plain Dynamic Island: 126 × 37pt on a 393pt screen. */
+  .island { width: 32cqi; height: 9.4cqi; background: #000; border-radius: 999px; position: relative; }
+  .island::after { content: ""; position: absolute; right: 9%; top: 50%; width: 3.2cqi; aspect-ratio: 1;
+    transform: translateY(-50%); border-radius: 50%; background: radial-gradient(circle at 40% 40%, #1d2433, #07090d 70%); }
+
+  .phone .display { font-size: 9.4cqi; line-height: 1; color: #e8ecf3; margin-top: 8cqi; }
+
+  /* One Home Screen grid, four columns, shared by the icons and the widgets so each child sits under its column. */
+  .home { position: relative; width: 86.8cqi; display: grid; gap: 8cqi; margin-top: 8cqi; }  /* iOS side margins: 26pt each on 393pt */
+  .cols { display: grid; grid-template-columns: repeat(4, 1fr); row-gap: 4.4cqi; }
+  .app { display: grid; justify-items: center; gap: 1.6cqi; font-size: 3cqi; color: #dfe3ea; }
+  .plate { position: relative; width: 15.3cqi; aspect-ratio: 1; border-radius: 22.5%; display: grid; place-items: center; }
+  .app .plate { background: #fff; }
+  .app .plate img { width: 58%; }
+  .ghost { opacity: 0.2; filter: saturate(0.4); }
+  .ghost .plate { background: var(--tint); }
+  .ghost .plate::after { content: ""; width: 42%; aspect-ratio: 1; border-radius: var(--r, 50%); background: rgba(255,255,255,0.75); }
+  .ghost i { width: 60%; height: 1em; border-radius: 0.3em; background: rgba(255,255,255,0.5); }
+
+  .badge { position: absolute; display: grid; place-items: center; min-width: 1.6em; height: 1.6em; padding: 0 0.42em;
+    border-radius: 999px; background: var(--badge); color: #fff; font-weight: 600; font-variant-numeric: tabular-nums;
+    letter-spacing: -0.01em; line-height: 1; }
+  .plate .badge { top: -0.5em; right: -0.5em; font-size: 3.9cqi; z-index: 2; }
+
+  /* Two small widgets, Icons style, each named by its owner. A small widget spans two icon columns. */
+  .widgets { display: grid; grid-template-columns: 1fr 1fr; gap: 5.4cqi; }
+  .wcell { display: grid; }
+  .widget { position: relative; z-index: 2; width: 100%; aspect-ratio: 1; display: grid; grid-template-columns: 1fr 1fr; grid-template-rows: auto 1fr; align-items: center;
+    background: var(--widget); border-radius: 5.6cqi; padding: 3.6cqi 1.2cqi 2.4cqi;
+    box-shadow: 0 0 0 0.5px rgba(255,255,255,0.08), 0 20px 50px rgba(0,0,0,0.45); }
+  /* The title the owner typed, top left, with the refresh button opposite: as the app draws it. */
+  .wtitle { grid-column: 1 / -1; align-self: start; display: flex; align-items: center; justify-content: space-between;
+    padding-inline: 2.4cqi; font-size: 3.8cqi; font-weight: 600; color: #f2f2f4; text-align: left; }
+  .wtitle svg { width: 1.45em; height: 1.45em; padding: 0.3em; border-radius: 50%; background: rgba(255,255,255,0.1); stroke: #d9d9de; fill: none; stroke-width: 2.2; stroke-linecap: round; }
+  .widget .plate { background: var(--plate); box-shadow: inset 0 0 0 0.5px rgba(255,255,255,0.14); }
+  .widget .plate img { width: 56%; }
+  .widget .app { color: #d9d9de; }
+
+  /* The split: dashed threads from each parent badge to its children, with the numbers travelling down them. */
+  .threads { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; pointer-events: none; z-index: 1; }
+  .threads path { fill: none; stroke: var(--badge); stroke-width: 1.5; stroke-dasharray: 3 5; opacity: 0.55; animation: flow 1.6s linear infinite; }
+  @keyframes flow { to { stroke-dashoffset: -16; } }
+  .traveller { position: absolute; left: 0; top: 0; z-index: 3; font-size: 3.3cqi; offset-rotate: 0deg; offset-anchor: center; opacity: 0; }
+
+  /* Badges floating around the phone, at different depths. */
+  .float { position: absolute; z-index: 1; font-size: var(--size); box-shadow: 0 6px 18px rgba(255,59,48,0.25), inset 0 -2px 4px rgba(0,0,0,0.18), inset 0 1px 2px rgba(255,255,255,0.3);
+    filter: blur(var(--blur, 0)); opacity: var(--o, 1); animation: bob var(--dur, 9s) ease-in-out infinite alternate; }
+  /* Same durations, bigger travel: --amp scales every badge's drift. */
+  .float { --amp: 1.8; }
+  @keyframes bob { from { transform: translate(0, 0) rotate(-5deg); }
+    to { transform: translate(calc(var(--dx, 6px) * var(--amp)), calc(var(--dy, -14px) * var(--amp))) rotate(5deg); } }
+  @media (prefers-reduced-motion: reduce) { .float, .threads path { animation: none; } }
+  @media (max-width: 560px) { .float.wide { display: none; } }
+  /* 24px side gutters on phones; the phone shrinks to match. */
+  @media (max-width: 560px) { .page { padding-inline: 24px; } .phone { --w: min(480px, 100cqi - 48px); } }
+
+  .footer { border-top: 0; }
+  .fade { position: absolute; left: 0; right: 0; bottom: 0; height: 60px; z-index: 2; background: linear-gradient(transparent, var(--paper)); pointer-events: none; }
+
+  .facts { display: grid; gap: var(--s5); max-width: 420px; margin-inline: auto; }
+  .facts div { padding-top: 0; }
+  .facts h3 { font-size: 24px; letter-spacing: -0.02em; line-height: 1.15; margin-bottom: var(--s2); }
+  .facts p { color: var(--muted); font-size: 15px; }
+</style>
+</head>
+<body>
+<header class="stage">
+  <div class="page">
+    <nav class="nav">
+      <a class="nav-brand" href="./"><img src="assets/icon.png" alt="">Splitter</a>
+      <span class="store-badge"><img src="../kit/app-store-badge.svg" alt="Download on the App Store" height="52"></span>
+    </nav>
+  </div>
+
+  <!-- floating badges: size, position, depth -->
+  <span class="badge float wide" style="--size:30px; left:9%; top:30%; --dur:8s" aria-hidden="true">12</span>
+  <span class="badge float" style="--size:18px; left:4%; top:62%; --blur:2px; --o:.7; --dur:11s; --dy:10px" aria-hidden="true">3</span>
+  <span class="badge float wide" style="--size:44px; left:13%; top:78%; --blur:1px; --o:.5; --dur:10s" aria-hidden="true">5</span>
+  <span class="badge float" style="--size:22px; right:6%; top:22%; --o:.5; --dur:7s; --dx:-6px" aria-hidden="true">27</span>
+  <span class="badge float wide" style="--size:38px; right:10%; top:52%; --dur:12s" aria-hidden="true">99+</span>
+  <span class="badge float" style="--size:16px; right:3%; top:76%; --blur:3px; --o:.6; --dur:9s" aria-hidden="true">1</span>
+  <span class="badge float wide" style="--size:14px; left:24%; top:16%; --blur:2.5px; --o:.55; --dur:13s" aria-hidden="true">8</span>
+
+  <div class="page">
+    <div class="phone">
+      <div class="screen">
+        <div class="island" aria-hidden="true"></div>
+        <h1 class="display">One badge<br>per account.</h1>
+
+        <div class="home" id="home" role="img" aria-label="Gmail's badge of 15 splits into 12 for Acme and 3 for Home. Slack's badge of 9 splits into 5 for Acme and 4 for Book Club. Two widgets, named Work and Personal, show them.">
+          <svg class="threads" id="threads" aria-hidden="true"></svg>
+
+          <div class="cols" aria-hidden="true">
+            <div class="app ghost" style="--tint:#4b6a8a"><div class="plate"></div><i></i></div>
+            <div class="app ghost" style="--tint:#6e5a86; --r:22%"><div class="plate"></div><i></i></div>
+            <div class="app ghost" style="--tint:#3f7a6a"><div class="plate"></div><i></i></div>
+            <div class="app ghost" style="--tint:#8a6a4b; --r:22%"><div class="plate"></div><i></i></div>
+            <div class="app" data-parent="gmail"><div class="plate"><img src="assets/gmail.svg" alt=""><span class="badge">15</span></div>Gmail</div>
+            <div class="app ghost" style="--tint:#556070; --r:22%"><div class="plate"></div><i></i></div>
+            <div class="app ghost" style="--tint:#7a4b5b"><div class="plate"></div><i></i></div>
+            <div class="app" data-parent="slack"><div class="plate"><img src="assets/slack.svg" alt=""><span class="badge">9</span></div>Slack</div>
+          </div>
+
+          <div class="widgets" aria-hidden="true">
+            <div class="wcell">
+              <div class="widget">
+                <div class="wtitle">Work<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 12a8 8 0 1 1-2.34-5.66M20 4v5h-5"/></svg></div>
+                <div class="app" data-child="gmail"><div class="plate"><img src="assets/gmail.svg" alt=""><span class="badge">12</span></div>Acme</div>
+                <div class="app" data-child="slack"><div class="plate"><img src="assets/slack.svg" alt=""><span class="badge">5</span></div>Acme</div>
+              </div>
+            </div>
+            <div class="wcell">
+              <div class="widget">
+                <div class="wtitle">Personal<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 12a8 8 0 1 1-2.34-5.66M20 4v5h-5"/></svg></div>
+                <div class="app" data-child="gmail"><div class="plate"><img src="assets/gmail.svg" alt=""><span class="badge">3</span></div>Home</div>
+                <div class="app" data-child="slack"><div class="plate"><img src="assets/slack.svg" alt=""><span class="badge">4</span></div>Book Club</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+  <div class="fade"></div>
+</header>
+
+<section class="section" style="padding-top: var(--s4)">
+  <div class="page facts">
+    <div><h3>One badge per account</h3><p>Unique notification badges for each Gmail inbox and Slack workspace.</p></div>
+    <div><h3>Sets for every use case</h3><p>Account groupings you control. Work, personal, freelance, etc.</p></div>
+    <div><h3>Always Private</h3><p>No tracking, no servers. Your passwords are never saved by Splitter.</p></div>
+  </div>
+</section>
+
+<footer class="footer" id="support">
+  <div class="page">
+    <span>Support: <a href="mailto:madebythreeeight@gmail.com">madebythreeeight@gmail.com</a></span>
+    <span><a href="privacy.html">Privacy</a> · © 2026 threeeight</span>
+  </div>
+</footer>
+
+<script>
+  /* Draw a thread from each parent badge to each of its children's badges, then
+     send a copy of each child's number down its thread, one after another. */
+  const home = document.getElementById("home"), svg = document.getElementById("threads");
+  const reduce = matchMedia("(prefers-reduced-motion: reduce)");
+  let routes = [];
+
+  function centre(el) {
+    const r = el.getBoundingClientRect(), h = home.getBoundingClientRect();
+    return { x: r.left + r.width / 2 - h.left, y: r.top + r.height / 2 - h.top };
+  }
+  function layout() {
+    routes = [];
+    svg.innerHTML = "";
+    home.querySelectorAll("[data-child]").forEach((child) => {
+      const parent = home.querySelector(`[data-parent="${child.dataset.child}"] .badge`);
+      const badge = child.querySelector(".badge");
+      const a = centre(parent), b = centre(badge), mid = (a.y + b.y) / 2;
+      const d = `M ${a.x} ${a.y} C ${a.x} ${mid}, ${b.x} ${mid}, ${b.x} ${b.y}`;
+      const path = document.createElementNS("http://www.w3.org/2000/svg", "path");
+      path.setAttribute("d", d);
+      svg.appendChild(path);
+      routes.push({ d, label: badge.textContent });
+    });
+  }
+
+  function send() {
+    if (reduce.matches || document.hidden) return;
+    routes.forEach((r, i) => {
+      const t = document.createElement("span");
+      t.className = "badge traveller";
+      t.textContent = r.label;
+      t.style.offsetPath = `path("${r.d}")`;
+      home.appendChild(t);
+      t.animate([
+        { offsetDistance: "0%", opacity: 0, transform: "scale(1.15)" },
+        { offsetDistance: "18%", opacity: 0, offset: 0.18 },
+        { offsetDistance: "30%", opacity: 1, offset: 0.3 },
+        { offsetDistance: "88%", opacity: 1, offset: 0.88 },
+        { offsetDistance: "100%", opacity: 0, transform: "scale(0.9)" },
+      ], { duration: 2200, delay: i * 260, easing: "cubic-bezier(.45,0,.25,1)", fill: "both" })
+        .finished.then(() => t.remove());
+    });
+  }
+
+  layout();
+  new ResizeObserver(layout).observe(home);
+  if (CSS.supports("offset-path", 'path("M0 0 L1 1")')) { send(); setInterval(send, 4200); }
+</script>
+</body>
+</html>

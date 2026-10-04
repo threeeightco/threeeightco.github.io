@@ -1,0 +1,53 @@
+/* landing-kit tokens. The whole design system.
+   An app overrides only the "per-app" block, in its own brand.css. */
+
+:root {
+  color-scheme: light dark;
+
+  /* Type: one stack, four sizes */
+  --font: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  --mono: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  --t-display: clamp(48px, 9vw, 88px);
+  --t-title: clamp(28px, 4.5vw, 40px);
+  --t-body: clamp(17px, 1.6vw, 19px);
+  --t-label: 12px;
+
+  /* Color: five neutral roles */
+  --ink: #111112;
+  --paper: #ffffff;
+  --muted: #6e6e73;
+  --line: #e3e3e6;
+  --surface: #f4f4f5;
+
+  /* Space: 8-pt scale */
+  --s1: 4px;
+  --s2: 8px;
+  --s3: 16px;
+  --s4: 24px;
+  --s5: 32px;
+  --s6: 48px;
+  --s7: 72px;
+  --s8: 120px;
+  --measure: 680px;
+  --wide: 1120px;
+
+  /* Shape */
+  --radius: 999px;
+
+  /* Per-app: brand.css may override these and nothing else */
+  --accent: var(--ink);
+  --hero-bg: var(--paper);
+  --hero-ink: var(--ink);
+  --shot-radius: 28px;
+  --display-tracking: -0.035em;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --ink: #f5f5f7;
+    --paper: #0b0b0c;
+    --muted: #9a9aa0;
+    --line: #2a2a2e;
+    --surface: #18181a;
+  }
+}
