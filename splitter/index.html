@@ -17,7 +17,7 @@
 <style>
   /* Always night. The page is a phone; the badges it splits float around it. */
   :root { color-scheme: dark; --ink: #f2f2f4; --paper: #050506; --muted: #8e8e96; --line: #222226; --surface: #111114;
-    --badge: #ff3b30; --widget: #1c1c1e; --plate: #38383a; --display-tracking: -0.04em; }
+    --badge: #ff3b30; --widget: #eaeaea; --plate: #ffffff; --display-tracking: -0.04em; }
 
   .stage { position: relative; overflow: hidden; padding-top: var(--s2); container-type: inline-size;
     background: radial-gradient(50% 40% at 50% 45%, rgba(70, 90, 140, 0.22), transparent 70%), var(--paper); }
@@ -62,19 +62,20 @@
     letter-spacing: -0.01em; line-height: 1; }
   .plate .badge { top: -0.5em; right: -0.5em; font-size: 3.9cqi; z-index: 2; }
 
-  /* Two small widgets, Icons style, each named by its owner. A small widget spans two icon columns. */
+  /* Two small widgets, Icons style, each named by its owner. A small widget spans two icon columns.
+     Drawn in light mode, as the app draws them: #EAEAEA, white plates with a soft shadow, black text. */
   .widgets { display: grid; grid-template-columns: 1fr 1fr; gap: 5.4cqi; }
   .wcell { display: grid; }
   .widget { position: relative; z-index: 2; width: 100%; aspect-ratio: 1; display: grid; grid-template-columns: 1fr 1fr; grid-template-rows: auto 1fr; align-items: center;
     background: var(--widget); border-radius: 5.6cqi; padding: 3.6cqi 1.2cqi 2.4cqi;
-    box-shadow: 0 0 0 0.5px rgba(255,255,255,0.08), 0 20px 50px rgba(0,0,0,0.45); }
+    box-shadow: 0 20px 50px rgba(0,0,0,0.45); }
   /* The title the owner typed, top left, with the refresh button opposite: as the app draws it. */
   .wtitle { grid-column: 1 / -1; align-self: start; display: flex; align-items: center; justify-content: space-between;
-    padding-inline: 2.4cqi; font-size: 3.8cqi; font-weight: 600; color: #f2f2f4; text-align: left; }
-  .wtitle svg { width: 1.45em; height: 1.45em; padding: 0.3em; border-radius: 50%; background: rgba(255,255,255,0.1); stroke: #d9d9de; fill: none; stroke-width: 2.2; stroke-linecap: round; }
-  .widget .plate { background: var(--plate); box-shadow: inset 0 0 0 0.5px rgba(255,255,255,0.14); }
+    padding-inline: 2.4cqi; font-size: 3.8cqi; font-weight: 600; color: #000; text-align: left; }
+  .wtitle svg { width: 1.45em; height: 1.45em; padding: 0.3em; border-radius: 50%; background: rgba(0,0,0,0.06); stroke: #3c3c43; fill: none; stroke-width: 2.2; stroke-linecap: round; }
+  .widget .plate { background: var(--plate); box-shadow: inset 0 0 0 0.5px rgba(0,0,0,0.06), 0 1.5px 3px rgba(0,0,0,0.16); }
   .widget .plate img { width: 56%; }
-  .widget .app { color: #d9d9de; }
+  .widget .app { color: #000; }
 
   /* The split: dashed threads from each parent badge to its children, with the numbers travelling down them. */
   .threads { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; pointer-events: none; z-index: 1; }
