@@ -93,6 +93,8 @@
   @media (max-width: 560px) { .float.wide { display: none; } }
   /* 24px side gutters on phones; the phone shrinks to match. */
   @media (max-width: 560px) { .page { padding-inline: 24px; } .phone { --w: min(480px, 100cqi - 48px); } }
+  /* On phones the 27 hangs off the phone's right edge, half tucked behind the bezel. */
+  @media (max-width: 560px) { .float.edge { right: 2px !important; top: 26% !important; font-size: 15px; } }
 
   .footer { border-top: 0; }
   .fade { position: absolute; left: 0; right: 0; bottom: 0; height: 60px; z-index: 2; background: linear-gradient(transparent, var(--paper)); pointer-events: none; }
@@ -116,7 +118,7 @@
   <span class="badge float wide" style="--size:30px; left:9%; top:30%; --dur:8s" aria-hidden="true">12</span>
   <span class="badge float" style="--size:18px; left:4%; top:62%; --blur:2px; --o:.7; --dur:11s; --dy:10px" aria-hidden="true">3</span>
   <span class="badge float wide" style="--size:44px; left:13%; top:78%; --blur:1px; --o:.5; --dur:10s" aria-hidden="true">5</span>
-  <span class="badge float" style="--size:22px; right:6%; top:22%; --o:.5; --dur:7s; --dx:-6px" aria-hidden="true">27</span>
+  <span class="badge float edge" style="--size:22px; right:6%; top:22%; --o:.5; --dur:7s; --dx:-6px" aria-hidden="true">27</span>
   <span class="badge float wide" style="--size:38px; right:10%; top:52%; --dur:12s" aria-hidden="true">99+</span>
   <span class="badge float" style="--size:16px; right:3%; top:76%; --blur:3px; --o:.6; --dur:9s" aria-hidden="true">1</span>
   <span class="badge float wide" style="--size:14px; left:24%; top:16%; --blur:2.5px; --o:.55; --dur:13s" aria-hidden="true">8</span>
