@@ -170,14 +170,14 @@
 <section class="section" style="padding-top: var(--s4)">
   <div class="page facts">
     <div><h3>One badge per account</h3><p>Unique notification badges for each Gmail inbox and Slack workspace.</p></div>
-    <div><h3>Sets for every use case</h3><p>Account groupings you control. Work, personal, freelance, etc.</p></div>
-    <div><h3>Always Private</h3><p>No tracking, no servers. Your passwords are never saved by Splitter.</p></div>
+    <div><h3>Sets for every use case</h3><p>Account groupings you control. Work, personal, family, freelance, etc.</p></div>
+    <div><h3>Always Private</h3><p>No tracking, no servers, and your passwords are never saved by Splitter.</p></div>
   </div>
 </section>
 
 <footer class="footer" id="support">
   <div class="page">
-    <span>Support: <a href="mailto:madebythreeeight@gmail.com">madebythreeeight@gmail.com</a></span>
+    <a href="#contact" id="contact" data-u="madebythreeeight" data-d="gmail.com">Contact</a>
     <span><a href="privacy.html">Privacy</a> · © 2026 threeeight</span>
   </div>
 </footer>
@@ -230,6 +230,14 @@
   layout();
   new ResizeObserver(layout).observe(home);
   if (CSS.supports("offset-path", 'path("M0 0 L1 1")')) { send(); setInterval(send, 4200); }
+</script>
+<script>
+  /* The address is joined only on click, so it never appears in the page as written. */
+  document.getElementById("contact").addEventListener("click", (e) => {
+    e.preventDefault();
+    const a = e.currentTarget;
+    location.href = "mailto:" + a.dataset.u + "@" + a.dataset.d;
+  });
 </script>
 </body>
 </html>
