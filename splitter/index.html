@@ -17,7 +17,7 @@
 <style>
   /* Always night. The page is a phone; the badges it splits float around it. */
   :root { color-scheme: dark; --ink: #f2f2f4; --paper: #050506; --muted: #8e8e96; --line: #222226; --surface: #111114;
-    --badge: #ff3b30; --widget: #1c1c1e; --plate: #38383a; --display-tracking: -0.04em; }
+    --badge: #ff3b30; --widget: #eaeaea; --plate: #ffffff; --display-tracking: -0.04em; }
 
   .stage { position: relative; overflow: hidden; padding-top: var(--s2); container-type: inline-size;
     background: radial-gradient(50% 40% at 50% 45%, rgba(70, 90, 140, 0.22), transparent 70%), var(--paper); }
@@ -35,7 +35,14 @@
     box-shadow: inset 0 0 0 1px rgba(255,255,255,0.08), 0 -20px 80px rgba(80, 100, 160, 0.12); }
   .screen { position: relative; container-type: inline-size; overflow: hidden;
     border-radius: calc(var(--w) * 0.14) calc(var(--w) * 0.14) 0 0; padding: 2.8% 0 15%;
-    background: linear-gradient(180deg, #21324f 0%, #152238 38%, #0b111c 70%, #050506 100%);
+    /* A soft mesh: a few blurred colour pools over the old blue-to-black fall-off, kept faint. */
+    background:
+      radial-gradient(55% 40% at 18% 16%, rgba(70, 116, 214, 0.62), transparent 70%),
+      radial-gradient(50% 38% at 88% 24%, rgba(124, 82, 196, 0.42), transparent 70%),
+      radial-gradient(42% 30% at 58% 40%, rgba(64, 92, 200, 0.22), transparent 72%),
+      radial-gradient(55% 40% at 22% 58%, rgba(38, 132, 150, 0.30), transparent 72%),
+      radial-gradient(48% 36% at 84% 66%, rgba(176, 72, 110, 0.22), transparent 72%),
+      linear-gradient(180deg, #1c2b47 0%, #132036 40%, #0b111c 70%, #050506 100%);
     display: flex; flex-direction: column; align-items: center; text-align: center; }
 
   /* A plain Dynamic Island: 126 × 37pt on a 393pt screen. */
@@ -51,7 +58,7 @@
   .app { display: grid; justify-items: center; gap: 1.6cqi; font-size: 3cqi; color: #dfe3ea; }
   .plate { position: relative; width: 15.3cqi; aspect-ratio: 1; border-radius: 22.5%; display: grid; place-items: center; }
   .app .plate { background: #fff; }
-  .app .plate img { width: 58%; }
+  .app .plate img { width: 68%; }
   .ghost { opacity: 0.2; filter: saturate(0.4); }
   .ghost .plate { background: var(--tint); }
   .ghost .plate::after { content: ""; width: 42%; aspect-ratio: 1; border-radius: var(--r, 50%); background: rgba(255,255,255,0.75); }
@@ -62,19 +69,29 @@
     letter-spacing: -0.01em; line-height: 1; }
   .plate .badge { top: -0.5em; right: -0.5em; font-size: 3.9cqi; z-index: 2; }
 
-  /* Two small widgets, Icons style, each named by its owner. A small widget spans two icon columns. */
+  /* Two small widgets, Icons style, each named by its owner. A small widget spans two icon columns.
+     Light-mode plates and text as the app draws them, on a faded glass panel for the page. */
   .widgets { display: grid; grid-template-columns: 1fr 1fr; gap: 5.4cqi; }
   .wcell { display: grid; }
-  .widget { position: relative; z-index: 2; width: 100%; aspect-ratio: 1; display: grid; grid-template-columns: 1fr 1fr; grid-template-rows: auto 1fr; align-items: center;
-    background: var(--widget); border-radius: 5.6cqi; padding: 3.6cqi 1.2cqi 2.4cqi;
-    box-shadow: 0 0 0 0.5px rgba(255,255,255,0.08), 0 20px 50px rgba(0,0,0,0.45); }
+  .widget { position: relative; z-index: 2; width: 100%; display: grid; grid-template-columns: 1fr 1fr; grid-template-rows: auto auto; row-gap: 4.4cqi; align-items: start;
+    background: rgba(234, 234, 234, 0.42); border-radius: 5.6cqi; padding: 3.6cqi 1.2cqi 3.4cqi;
+    -webkit-backdrop-filter: blur(16px) saturate(1.5); backdrop-filter: blur(16px) saturate(1.5);
+    box-shadow: inset 0 1px 0 rgba(255,255,255,0.45), inset 0 0 0 0.5px rgba(255,255,255,0.3), 0 20px 50px rgba(0,0,0,0.35); }
   /* The title the owner typed, top left, with the refresh button opposite: as the app draws it. */
   .wtitle { grid-column: 1 / -1; align-self: start; display: flex; align-items: center; justify-content: space-between;
-    padding-inline: 2.4cqi; font-size: 3.8cqi; font-weight: 600; color: #f2f2f4; text-align: left; }
-  .wtitle svg { width: 1.45em; height: 1.45em; padding: 0.3em; border-radius: 50%; background: rgba(255,255,255,0.1); stroke: #d9d9de; fill: none; stroke-width: 2.2; stroke-linecap: round; }
-  .widget .plate { background: var(--plate); box-shadow: inset 0 0 0 0.5px rgba(255,255,255,0.14); }
-  .widget .plate img { width: 56%; }
-  .widget .app { color: #d9d9de; }
+    padding-inline: 2.4cqi; font-size: 3.8cqi; font-weight: 600; color: #000; text-align: left; }
+  .wtitle svg { width: 1.45em; height: 1.45em; padding: 0.3em; border-radius: 50%; background: rgba(255,255,255,0.3); stroke: #1c1c1e; box-shadow: 0 1px 2px rgba(0,0,0,0.08); fill: none; stroke-width: 2.2; stroke-linecap: round; }
+  .widget .plate { background: var(--plate); box-shadow: inset 0 0 0 0.5px rgba(0,0,0,0.06), 0 1.5px 3px rgba(0,0,0,0.16); }
+  .widget .plate img { width: 66%; }
+  /* Photos style, as the app draws it: the face fills a circle, the service's icon sits on the
+     circle's edge at 45° (a white squircle 36% of the face), and the count stays top right. */
+  .widget .plate.photo { background: none; box-shadow: none; }
+  .widget .plate.photo img.face { width: 100%; height: 100%; border-radius: 50%; object-fit: cover;
+    box-shadow: inset 0 0 0 0.5px rgba(0,0,0,0.06), 0 1.5px 3px rgba(0,0,0,0.16); }
+  .svc { position: absolute; right: -0.5cqi; bottom: -0.5cqi; width: 5.5cqi; aspect-ratio: 1; border-radius: 22.5%;
+    background: #fff; display: grid; place-items: center; box-shadow: 0 1px 2px rgba(0,0,0,0.16); }
+  .widget .plate .svc img { width: 64%; }
+  .widget .app { color: #000; }
 
   /* The split: dashed threads from each parent badge to its children, with the numbers travelling down them. */
   .threads { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; pointer-events: none; z-index: 1; }
@@ -97,6 +114,7 @@
   @media (max-width: 560px) { .float.edge { right: 2px !important; top: 26% !important; font-size: 15px; } }
 
   .footer { border-top: 0; }
+  .footer a { color: inherit; }  /* links match the copyright text */
   .fade { position: absolute; left: 0; right: 0; bottom: 0; height: 60px; z-index: 2; background: linear-gradient(transparent, var(--paper)); pointer-events: none; }
 
   .facts { display: grid; gap: var(--s5); max-width: 420px; margin-inline: auto; }
@@ -154,8 +172,8 @@
             <div class="wcell">
               <div class="widget">
                 <div class="wtitle">Personal<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 12a8 8 0 1 1-2.34-5.66M20 4v5h-5"/></svg></div>
-                <div class="app" data-child="gmail"><div class="plate"><img src="assets/gmail.svg" alt=""><span class="badge">3</span></div>Home</div>
-                <div class="app" data-child="slack"><div class="plate"><img src="assets/slack.svg" alt=""><span class="badge">4</span></div>Book Club</div>
+                <div class="app" data-child="gmail"><div class="plate photo"><img class="face" src="assets/face-home.jpg" alt=""><span class="svc"><img src="assets/gmail.svg" alt=""></span><span class="badge">3</span></div>Home</div>
+                <div class="app" data-child="slack"><div class="plate photo"><img class="face" src="assets/face-bookclub.jpg" alt=""><span class="svc"><img src="assets/slack.svg" alt=""></span><span class="badge">4</span></div>Book Club</div>
               </div>
             </div>
           </div>
@@ -171,14 +189,15 @@
   <div class="page facts">
     <div><h3>One badge per account</h3><p>Unique notification badges for each Gmail inbox and Slack workspace.</p></div>
     <div><h3>Sets for every use case</h3><p>Account groupings you control. Work, personal, family, freelance, etc.</p></div>
+    <div><h3>Personalize every Set</h3><p>Customize each widget with app icons, profile photos, or bold count tiles.</p></div>
     <div><h3>Always Private</h3><p>No tracking, no servers, and your passwords are never saved by Splitter.</p></div>
   </div>
 </section>
 
 <footer class="footer" id="support">
   <div class="page">
-    <a href="#contact" id="contact" data-u="madebythreeeight" data-d="gmail.com">Contact</a>
-    <span><a href="privacy.html">Privacy</a> · © 2026 threeeight</span>
+    <span><a href="#contact" id="contact" data-u="madebythreeeight" data-d="gmail.com">Contact</a> · <a href="privacy.html">Privacy</a></span>
+    <span>© 2026 threeeight</span>
   </div>
 </footer>
 
