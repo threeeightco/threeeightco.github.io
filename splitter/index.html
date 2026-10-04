@@ -177,7 +177,7 @@
 
 <footer class="footer" id="support">
   <div class="page">
-    <span>Support: <a href="mailto:madebythreeeight@gmail.com">madebythreeeight@gmail.com</a></span>
+    <a href="#contact" id="contact" data-u="madebythreeeight" data-d="gmail.com">Contact</a>
     <span><a href="privacy.html">Privacy</a> · © 2026 threeeight</span>
   </div>
 </footer>
@@ -230,6 +230,14 @@
   layout();
   new ResizeObserver(layout).observe(home);
   if (CSS.supports("offset-path", 'path("M0 0 L1 1")')) { send(); setInterval(send, 4200); }
+</script>
+<script>
+  /* The address is joined only on click, so it never appears in the page as written. */
+  document.getElementById("contact").addEventListener("click", (e) => {
+    e.preventDefault();
+    const a = e.currentTarget;
+    location.href = "mailto:" + a.dataset.u + "@" + a.dataset.d;
+  });
 </script>
 </body>
 </html>
