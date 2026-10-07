@@ -26,6 +26,8 @@
   .store-badge { display: block; }
   .store-badge img { height: 52px; width: auto; }
   @media (max-width: 560px) { .store-badge img { height: 44px; } }
+  /* Beta sign-up: a white pill where the badge was, opening the Google Form. */
+  .button.beta { background: var(--ink); color: var(--paper); }
 
   /* The phone, at iPhone proportions: everything inside is sized in screen widths (cqi of .screen),
      so a 60pt icon on a 393pt screen stays about 15% of the width at any size. */
@@ -128,7 +130,10 @@
   <div class="page">
     <nav class="nav">
       <a class="nav-brand" href="./"><img src="assets/icon.png" alt="">Splitter</a>
+      <!-- App Store badge, hidden during the beta. To restore it, put this back in place of the Test the beta button:
       <span class="store-badge"><img src="../kit/app-store-badge.svg" alt="Download on the App Store" height="52"></span>
+      -->
+      <a class="button beta" href="GOOGLE_FORM_URL" target="_blank" rel="noopener">Test the beta</a>
     </nav>
   </div>
 
