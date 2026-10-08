@@ -26,8 +26,19 @@
   .store-badge { display: block; }
   .store-badge img { height: 52px; width: auto; }
   @media (max-width: 560px) { .store-badge img { height: 44px; } }
-  /* Beta sign-up: a white pill where the badge was, opening the Google Form. */
+  /* Beta: a white pill where the badge was. It opens a small sheet with a QR code to scan
+     with an iPhone, and the TestFlight link for anyone already on one. */
   .button.beta { background: var(--ink); color: var(--paper); }
+  .qr-sheet { width: min(360px, calc(100vw - 32px)); padding: var(--s4); border: 1px solid var(--line);
+    border-radius: 24px; background: var(--surface); color: var(--ink); text-align: center; }
+  .qr-sheet::backdrop { background: rgba(0, 0, 0, 0.6); backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px); }
+  .qr-sheet .qr { width: 200px; margin: 0 auto; padding: 12px; border-radius: 16px; background: #fff; }
+  .qr-sheet .qr img { width: 100%; image-rendering: pixelated; }
+  .qr-sheet p { color: var(--muted); font-size: 15px; margin-top: var(--s3); text-wrap: pretty; }
+  .qr-sheet .open { margin-top: var(--s4); width: 100%; justify-content: center; }
+  .qr-sheet .row { display: flex; justify-content: center; margin-top: var(--s3); }
+  .qr-sheet .link { border: 0; padding: var(--s1); background: none; color: var(--muted); font: inherit; font-size: 15px; cursor: pointer; }
+  .qr-sheet .link:hover { color: var(--ink); }
 
   /* The phone, at iPhone proportions: everything inside is sized in screen widths (cqi of .screen),
      so a 60pt icon on a 393pt screen stays about 15% of the width at any size. */
@@ -133,7 +144,7 @@
       <!-- App Store badge, hidden during the beta. To restore it, put this back in place of the Test the beta button:
       <span class="store-badge"><img src="../kit/app-store-badge.svg" alt="Download on the App Store" height="52"></span>
       -->
-      <a class="button beta" href="https://docs.google.com/forms/d/e/1FAIpQLSfmliDzpwdNGxnEIC_LIAVeOwSpqbvLYq3o7wacWIjGgzoI7g/viewform" target="_blank" rel="noopener">Test the beta</a>
+      <a class="button beta" id="beta-open" href="https://testflight.apple.com/join/wKgCeqm5">Test the beta</a>
     </nav>
   </div>
 
@@ -199,6 +210,15 @@
   </div>
 </section>
 
+<dialog class="qr-sheet" id="beta-sheet" aria-labelledby="beta-hint">
+  <div class="qr"><img src="assets/testflight-qr.svg" alt="QR code for the Splitter TestFlight beta" width="200" height="200"></div>
+  <p id="beta-hint">Scan with your iPhone camera to join the beta in TestFlight.</p>
+  <a class="button beta open" href="https://testflight.apple.com/join/wKgCeqm5">Open in TestFlight</a>
+  <div class="row">
+    <button class="link" type="button" id="beta-close">Close</button>
+  </div>
+</dialog>
+
 <footer class="footer" id="support">
   <div class="page">
     <span><a href="#contact" id="contact" data-u="madebythreeeight" data-d="gmail.com">Contact</a> · <a href="privacy.html">Privacy</a></span>
@@ -261,6 +281,16 @@
     e.preventDefault();
     const a = e.currentTarget;
     location.href = "mailto:" + a.dataset.u + "@" + a.dataset.d;
+  });
+</script>
+<script>
+  /* The beta button opens the QR sheet instead of following its link; without script it stays a plain link. */
+  const sheet = document.getElementById("beta-sheet");
+  document.getElementById("beta-open").addEventListener("click", (e) => { e.preventDefault(); sheet.showModal(); });
+  document.getElementById("beta-close").addEventListener("click", () => sheet.close());
+  sheet.addEventListener("click", (e) => {
+    const r = sheet.getBoundingClientRect();
+    if (e.clientX < r.left || e.clientX > r.right || e.clientY < r.top || e.clientY > r.bottom) sheet.close();
   });
 </script>
 </body>
