@@ -3,10 +3,10 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Splitter: unread badges, split by account</title>
-<meta name="description" content="Splitter puts a separate unread badge for each Gmail inbox and Slack workspace on your iPhone Home Screen, grouped into widgets you name.">
+<title>Splitter: see what’s waiting and where</title>
+<meta name="description" content="Separate badges for every Gmail account and Slack workspace on your iPhone Home Screen, grouped however you like.">
 <meta property="og:title" content="Splitter">
-<meta property="og:description" content="One badge per account. Separate unread badges for each Gmail inbox and Slack workspace, as iPhone widgets.">
+<meta property="og:description" content="See what’s waiting and where. Separate badges for every Gmail account and Slack workspace, grouped however you like.">
 <meta property="og:image" content="https://threeeightco.github.io/splitter/assets/icon.png">
 <meta name="theme-color" content="#050506">
 <link rel="icon" href="assets/icon.png">
@@ -52,10 +52,12 @@
   .island::after { content: ""; position: absolute; right: 9%; top: 50%; width: 3.2cqi; aspect-ratio: 1;
     transform: translateY(-50%); border-radius: 50%; background: radial-gradient(circle at 40% 40%, #1d2433, #07090d 70%); }
 
-  .phone .display { font-size: 9.4cqi; line-height: 1; color: #e8ecf3; margin-top: 8cqi; }
+  .phone .display { font-size: 9.4cqi; line-height: 1; color: #e8ecf3; margin-top: 6.5cqi; }
+  /* The subhead runs as wide as the icon grid below it. */
+  .phone .lede { width: 86.8cqi; font-size: 4.1cqi; line-height: 1.35; color: rgba(232, 236, 243, 0.78); margin: 1.8cqi 0 0; text-wrap: pretty; }
 
   /* One Home Screen grid, four columns, shared by the icons and the widgets so each child sits under its column. */
-  .home { position: relative; width: 86.8cqi; display: grid; gap: 8cqi; margin-top: 8cqi; }  /* iOS side margins: 26pt each on 393pt */
+  .home { position: relative; width: 86.8cqi; display: grid; gap: 8cqi; margin-top: 6.5cqi; }  /* iOS side margins: 26pt each on 393pt */
   .cols { display: grid; grid-template-columns: repeat(4, 1fr); row-gap: 4.4cqi; }
   .app { display: grid; justify-items: center; gap: 1.6cqi; font-size: 3cqi; color: #dfe3ea; }
   .plate { position: relative; width: 15.3cqi; aspect-ratio: 1; border-radius: 22.5%; display: grid; place-items: center; }
@@ -150,7 +152,8 @@
     <div class="phone">
       <div class="screen">
         <div class="island" aria-hidden="true"></div>
-        <h1 class="display">Unread badges,<br>split by account</h1>
+        <h1 class="display">See what’s waiting<br>and where</h1>
+        <p class="lede">Separate badges for every Gmail account and Slack workspace, grouped however you like.</p>
 
         <div class="home" id="home" role="img" aria-label="Gmail's badge of 15 splits into 12 for Acme and 3 for Home. Slack's badge of 9 splits into 5 for Acme and 4 for Book Club. Two widgets, named Work and Personal, show them.">
           <svg class="threads" id="threads" aria-hidden="true"></svg>
