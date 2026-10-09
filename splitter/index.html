@@ -29,12 +29,16 @@
   /* Beta: a white pill where the badge was. It opens a small sheet with a QR code to scan
      with an iPhone, and the TestFlight link for anyone already on one. */
   .button.beta { background: var(--ink); color: var(--paper); }
-  .qr-sheet { width: min(360px, calc(100vw - 32px)); padding: var(--s4); border: 1px solid var(--line);
+  /* The sheet hugs the QR tile, so the gap above it matches the gap at its sides. */
+  .qr-sheet { width: min(274px, calc(100vw - 32px)); padding: var(--s4); border: 1px solid var(--line);
     border-radius: 24px; background: var(--surface); color: var(--ink); text-align: center; }
   .qr-sheet::backdrop { background: rgba(0, 0, 0, 0.6); backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px); }
-  .qr-sheet .qr { width: 200px; margin: 0 auto; padding: 12px; border-radius: 16px; background: #fff; }
+  .qr-sheet .qr { width: 100%; margin: 0; padding: 12px; border-radius: 16px; background: #fff; }
   .qr-sheet .qr img { width: 100%; image-rendering: pixelated; }
   .qr-sheet p { color: var(--muted); font-size: 15px; margin-top: var(--s3); text-wrap: pretty; }
+  .qr-sheet .or { display: flex; align-items: center; gap: var(--s3); margin-top: var(--s4);
+    color: var(--muted); font-size: 12px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; }
+  .qr-sheet .or::before, .qr-sheet .or::after { content: ""; flex: 1; height: 1px; background: var(--line); }
   .qr-sheet .open { margin-top: var(--s4); width: 100%; justify-content: center; }
   .qr-sheet .row { display: flex; justify-content: center; margin-top: var(--s3); }
   .qr-sheet .link { border: 0; padding: var(--s1); background: none; color: var(--muted); font: inherit; font-size: 15px; cursor: pointer; }
@@ -213,6 +217,7 @@
 <dialog class="qr-sheet" id="beta-sheet" aria-labelledby="beta-hint">
   <div class="qr"><img src="assets/testflight-qr.svg" alt="QR code for the Splitter TestFlight beta" width="200" height="200"></div>
   <p id="beta-hint">Scan with your iPhone camera to join the beta in TestFlight.</p>
+  <div class="or">or</div>
   <a class="button beta open" href="https://testflight.apple.com/join/wKgCeqm5">Open in TestFlight</a>
   <div class="row">
     <button class="link" type="button" id="beta-close">Close</button>
