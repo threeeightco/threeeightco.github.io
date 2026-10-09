@@ -33,15 +33,16 @@
     border-radius: 24px; background: var(--surface); color: var(--ink); text-align: center; }
   .qr-sheet::backdrop { background: rgba(0, 0, 0, 0.6); backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px); }
   /* On windows too short for the whole sheet, only the QR shrinks, so the sheet never scrolls. */
-  .qr-sheet .qr { width: min(200px, calc(100dvh - 320px)); min-width: 120px; margin: 0 auto; padding: 12px; border-radius: 16px; background: #fff; }
+  .qr-sheet .qr { width: min(200px, calc(100dvh - 280px)); min-width: 120px; margin: 0 auto; padding: 12px; border-radius: 16px; background: #fff; }
   /* height: auto keeps the image square; its 200px height attribute otherwise stretched the white tile taller than wide. */
   .qr-sheet .qr img { width: 100%; height: auto; image-rendering: pixelated; }
   .qr-sheet p { color: var(--muted); font-size: 15px; margin-top: var(--s3); text-wrap: pretty; }
   .qr-sheet .already { margin-top: var(--s5); }
-  .qr-sheet .open { margin-top: var(--s2); width: 100%; justify-content: center; }
-  .qr-sheet .row { display: flex; justify-content: center; margin-top: var(--s3); }
-  .qr-sheet .link { border: 0; padding: var(--s1); background: none; color: var(--muted); font: inherit; font-size: 15px; cursor: pointer; }
-  .qr-sheet .link:hover { color: var(--ink); }
+  .qr-sheet .open { margin-top: var(--s3); width: 100%; justify-content: center; }
+  .qr-sheet .close { position: absolute; top: 12px; right: 12px; display: grid; place-items: center; width: 32px; height: 32px;
+    border: 0; border-radius: 50%; background: none; color: var(--muted); cursor: pointer; }
+  .qr-sheet .close:hover { color: var(--ink); background: var(--line); }
+  .qr-sheet .close svg { width: 14px; height: 14px; }
 
   /* The phone, at iPhone proportions: everything inside is sized in screen widths (cqi of .screen),
      so a 60pt icon on a 393pt screen stays about 15% of the width at any size. */
@@ -218,9 +219,7 @@
   <p id="beta-hint">Scan with your camera to open on your iPhone.</p>
   <p class="already">Already on your iPhone?</p>
   <a class="button beta open" href="https://testflight.apple.com/join/wKgCeqm5">Open in TestFlight</a>
-  <div class="row">
-    <button class="link" type="button" id="beta-close">Close</button>
-  </div>
+  <button class="close" type="button" id="beta-close" aria-label="Close"><svg viewBox="0 0 14 14" aria-hidden="true"><path d="M1 1l12 12M13 1L1 13" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></button>
 </dialog>
 
 <footer class="footer" id="support">
