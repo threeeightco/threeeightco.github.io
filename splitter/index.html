@@ -127,10 +127,10 @@
   .widget .app { color: #000; }
 
   /* The split: dashed threads from each parent badge to its children, with the numbers travelling down them. */
-  .threads { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; pointer-events: none; z-index: 1; }
-  .threads path { fill: none; stroke: var(--badge); stroke-width: 1.5; stroke-dasharray: 3 5; opacity: 0.55; animation: flow 1.6s linear infinite; }
+  .threads { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; pointer-events: none; z-index: 3; }
+  .threads path { fill: none; stroke: var(--badge); stroke-width: 1.75; stroke-dasharray: 3 5; opacity: 0.85; animation: flow 1.6s linear infinite; }
   @keyframes flow { to { stroke-dashoffset: -16; } }
-  .traveller { position: absolute; left: 0; top: 0; z-index: 3; font-size: 3.3cqi; offset-rotate: 0deg; offset-anchor: center; opacity: 0; }
+  .traveller { position: absolute; left: 0; top: 0; z-index: 4; font-size: 3.3cqi; offset-rotate: 0deg; offset-anchor: center; opacity: 0; }
 
   /* Badges floating around the phone, at different depths. */
   .float { position: absolute; z-index: 1; font-size: var(--size); box-shadow: 0 6px 18px rgba(255,59,48,0.25), inset 0 -2px 4px rgba(0,0,0,0.18), inset 0 1px 2px rgba(255,255,255,0.3);
@@ -257,9 +257,11 @@
   const reduce = matchMedia("(prefers-reduced-motion: reduce)");
   let routes = [];
 
-  function centre(el) {
+  /* The threads sit above the widget glass, so each runs from the bottom edge of the parent's badge
+     to the top edge of the child's, never across a badge. */
+  function edge(el, side) {
     const r = el.getBoundingClientRect(), h = home.getBoundingClientRect();
-    return { x: r.left + r.width / 2 - h.left, y: r.top + r.height / 2 - h.top };
+    return { x: r.left + r.width / 2 - h.left, y: (side === "top" ? r.top : r.bottom) - h.top };
   }
   function layout() {
     routes = [];
@@ -267,7 +269,7 @@
     home.querySelectorAll("[data-child]").forEach((child) => {
       const parent = home.querySelector(`[data-parent="${child.dataset.child}"] .badge`);
       const badge = child.querySelector(".badge");
-      const a = centre(parent), b = centre(badge), mid = (a.y + b.y) / 2;
+      const a = edge(parent, "bottom"), b = edge(badge, "top"), mid = (a.y + b.y) / 2;
       const d = `M ${a.x} ${a.y} C ${a.x} ${mid}, ${b.x} ${mid}, ${b.x} ${b.y}`;
       const path = document.createElementNS("http://www.w3.org/2000/svg", "path");
       path.setAttribute("d", d);
