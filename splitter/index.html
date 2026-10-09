@@ -33,8 +33,10 @@
   .qr-sheet { width: min(274px, calc(100vw - 32px)); padding: var(--s4); border: 1px solid var(--line);
     border-radius: 24px; background: var(--surface); color: var(--ink); text-align: center; }
   .qr-sheet::backdrop { background: rgba(0, 0, 0, 0.6); backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px); }
-  .qr-sheet .qr { width: 100%; margin: 0; padding: 12px; border-radius: 16px; background: #fff; }
-  .qr-sheet .qr img { width: 100%; image-rendering: pixelated; }
+  /* On windows too short for the whole sheet, only the QR shrinks, so the sheet fits without scrolling.
+     Everything but the QR takes ~316px including the browser's dialog margin. */
+  .qr-sheet .qr { width: min(100%, calc(100dvh - 320px)); min-width: 120px; margin: 0 auto; padding: 12px; border-radius: 16px; background: #fff; }
+  .qr-sheet .qr img { width: 100%; height: auto; image-rendering: pixelated; }
   .qr-sheet p { color: var(--muted); font-size: 15px; margin-top: var(--s3); text-wrap: pretty; }
   .qr-sheet .or { display: flex; align-items: center; gap: var(--s3); margin-top: var(--s4);
     color: var(--muted); font-size: 12px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; }
