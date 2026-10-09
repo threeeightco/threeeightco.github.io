@@ -72,16 +72,19 @@
 
   .phone .display { font-size: 9.4cqi; line-height: 1; color: #e8ecf3; margin-top: 6.5cqi; }
   /* The subhead runs as wide as the icon grid below it. */
-  .phone .lede { width: 86.8cqi; font-size: 4.1cqi; line-height: 1.35; color: rgba(232, 236, 243, 0.78); margin: 1.8cqi 0 0; text-wrap: pretty; }
+  .phone .lede { position: relative; z-index: 4; width: 86.8cqi; font-size: 4.1cqi; line-height: 1.35; color: rgba(232, 236, 243, 0.78); margin: 1.8cqi 0 0; text-wrap: pretty; }
 
   /* One Home Screen grid, four columns, shared by the icons and the widgets so each child sits under its column. */
-  .home { position: relative; width: 86.8cqi; display: grid; gap: 8cqi; margin-top: 6.5cqi; }  /* iOS side margins: 26pt each on 393pt */
+  .home { position: relative; width: 86.8cqi; display: grid; gap: 8cqi; margin-top: 2cqi; }  /* iOS side margins: 26pt each on 393pt */
   .cols { display: grid; grid-template-columns: repeat(4, 1fr); row-gap: 4.4cqi; }
   .app { display: grid; justify-items: center; gap: 1.6cqi; font-size: 3cqi; color: #dfe3ea; }
   .plate { position: relative; width: 15.3cqi; aspect-ratio: 1; border-radius: 22.5%; display: grid; place-items: center; }
   .app .plate { background: #fff; }
   .app .plate img { width: 68%; }
   .ghost { opacity: 0.2; filter: saturate(0.4); }
+  /* The top row of the grid fades in from nothing and tucks up behind the subhead. */
+  .faded { grid-column: 1 / -1; display: grid; grid-template-columns: repeat(4, 1fr); margin-top: -7cqi;
+    -webkit-mask-image: linear-gradient(to bottom, transparent 25%, rgba(0, 0, 0, 0.4)); mask-image: linear-gradient(to bottom, transparent 25%, rgba(0, 0, 0, 0.4)); }
   .ghost .plate { background: var(--tint); }
   .ghost .plate::after { content: ""; width: 42%; aspect-ratio: 1; border-radius: var(--r, 50%); background: rgba(255,255,255,0.75); }
   .ghost i { width: 60%; height: 1em; border-radius: 0.3em; background: rgba(255,255,255,0.5); }
@@ -171,16 +174,18 @@
       <div class="screen">
         <div class="island" aria-hidden="true"></div>
         <h1 class="display">See what’s waiting<br>and where</h1>
-        <p class="lede">Separate notification badges for each Gmail account and Slack workspace, organized however you like.</p>
+        <p class="lede">Your notification badges, split out for each Gmail account and Slack workspace.</p>
 
         <div class="home" id="home" role="img" aria-label="Gmail's badge of 15 splits into 12 for Acme and 3 for Home. Slack's badge of 9 splits into 5 for Acme and 4 for Book Club. Two widgets, named Work and Personal, show them.">
           <svg class="threads" id="threads" aria-hidden="true"></svg>
 
           <div class="cols" aria-hidden="true">
-            <div class="app ghost" style="--tint:#4b6a8a"><div class="plate"></div><i></i></div>
-            <div class="app ghost" style="--tint:#6e5a86; --r:22%"><div class="plate"></div><i></i></div>
-            <div class="app ghost" style="--tint:#3f7a6a"><div class="plate"></div><i></i></div>
-            <div class="app ghost" style="--tint:#8a6a4b; --r:22%"><div class="plate"></div><i></i></div>
+            <div class="faded">
+              <div class="app ghost" style="--tint:#4b6a8a"><div class="plate"></div><i></i></div>
+              <div class="app ghost" style="--tint:#6e5a86; --r:22%"><div class="plate"></div><i></i></div>
+              <div class="app ghost" style="--tint:#3f7a6a"><div class="plate"></div><i></i></div>
+              <div class="app ghost" style="--tint:#8a6a4b; --r:22%"><div class="plate"></div><i></i></div>
+            </div>
             <div class="app" data-parent="gmail"><div class="plate"><img src="assets/gmail.svg" alt=""><span class="badge">15</span></div>Gmail</div>
             <div class="app ghost" style="--tint:#556070; --r:22%"><div class="plate"></div><i></i></div>
             <div class="app ghost" style="--tint:#7a4b5b"><div class="plate"></div><i></i></div>
