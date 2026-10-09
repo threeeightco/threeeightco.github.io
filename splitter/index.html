@@ -29,20 +29,20 @@
   /* Beta: a white pill where the badge was. It opens a small sheet with a QR code to scan
      with an iPhone, and the TestFlight link for anyone already on one. */
   .button.beta { background: var(--ink); color: var(--paper); }
-  /* --qr is the QR tile's width; the scan line above it wraps to the same width. */
-  .qr-sheet { --qr: max(120px, min(200px, calc(100dvh - 304px)));
+  /* --qr is the QR tile's width; the scan line under it wraps to the same width. */
+  .qr-sheet { --qr: max(120px, min(200px, calc(100dvh - 320px)));
     width: min(360px, calc(100vw - 32px)); padding: var(--s4); border: 1px solid var(--line);
     border-radius: 24px; background: var(--surface); color: var(--ink); text-align: center; }
   .qr-sheet::backdrop { background: rgba(0, 0, 0, 0.6); backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px); }
   /* On windows too short for the whole sheet, only the QR shrinks, so the sheet never scrolls. */
-  .qr-sheet .qr { width: var(--qr); margin: var(--s3) auto 0; padding: 12px; border-radius: 16px; background: #fff; }
+  .qr-sheet .qr { width: var(--qr); margin: 0 auto; padding: 12px; border-radius: 16px; background: #fff; }
   /* height: auto keeps the image square; its 200px height attribute otherwise stretched the white tile taller than wide. */
   .qr-sheet .qr img { width: 100%; height: auto; image-rendering: pixelated; }
   .qr-sheet p { color: var(--muted); font-size: 15px; text-wrap: pretty; }
-  .qr-sheet #beta-hint { max-width: var(--qr); margin-inline: auto; }
-  .qr-sheet .already { margin-top: var(--s5); }
+  .qr-sheet #beta-hint { max-width: var(--qr); margin: var(--s3) auto 0; }
+  .qr-sheet .divider { width: 32px; height: 1px; margin: var(--s4) auto; border: 0; background: var(--muted); opacity: 0.4; }
   .qr-sheet .open { margin-top: var(--s3); width: 100%; justify-content: center; }
-  .qr-sheet .close { position: absolute; top: 12px; right: 12px; display: grid; place-items: center; width: 32px; height: 32px;
+  .qr-sheet .close { position: absolute; top: 8px; right: 8px; display: grid; place-items: center; width: 28px; height: 28px;
     border: 0; border-radius: 50%; background: none; color: var(--muted); cursor: pointer; }
   .qr-sheet .close:hover { color: var(--ink); background: var(--line); }
   .qr-sheet .close svg { width: 14px; height: 14px; }
@@ -218,8 +218,9 @@
 </section>
 
 <dialog class="qr-sheet" id="beta-sheet" aria-labelledby="beta-hint">
-  <p id="beta-hint">Scan with your camera to join the beta.</p>
   <div class="qr"><img src="assets/testflight-qr.svg" alt="QR code for the Splitter TestFlight beta" width="200" height="200"></div>
+  <p id="beta-hint">Scan with your camera to join the beta.</p>
+  <hr class="divider">
   <p class="already">Already on your iPhone?</p>
   <a class="button beta open" href="https://testflight.apple.com/join/wKgCeqm5">Open in TestFlight</a>
   <button class="close" type="button" id="beta-close" aria-label="Close"><svg viewBox="0 0 14 14" aria-hidden="true"><path d="M1 1l12 12M13 1L1 13" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></button>
