@@ -37,10 +37,8 @@
   /* height: auto keeps the image square; its 200px height attribute otherwise stretched the white tile taller than wide. */
   .qr-sheet .qr img { width: 100%; height: auto; image-rendering: pixelated; }
   .qr-sheet p { color: var(--muted); font-size: 15px; margin-top: var(--s3); text-wrap: pretty; }
-  .qr-sheet .or { display: flex; align-items: center; gap: var(--s3); margin-top: var(--s4);
-    color: var(--muted); font-size: 12px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; }
-  .qr-sheet .or::before, .qr-sheet .or::after { content: ""; flex: 1; height: 1px; background: var(--line); }
-  .qr-sheet .open { margin-top: var(--s4); width: 100%; justify-content: center; }
+  .qr-sheet .already { margin-top: var(--s5); }
+  .qr-sheet .open { margin-top: var(--s2); width: 100%; justify-content: center; }
   .qr-sheet .row { display: flex; justify-content: center; margin-top: var(--s3); }
   .qr-sheet .link { border: 0; padding: var(--s1); background: none; color: var(--muted); font: inherit; font-size: 15px; cursor: pointer; }
   .qr-sheet .link:hover { color: var(--ink); }
@@ -217,8 +215,8 @@
 
 <dialog class="qr-sheet" id="beta-sheet" aria-labelledby="beta-hint">
   <div class="qr"><img src="assets/testflight-qr.svg" alt="QR code for the Splitter TestFlight beta" width="200" height="200"></div>
-  <p id="beta-hint">Scan with your iPhone camera to join the beta in TestFlight.</p>
-  <div class="or">or</div>
+  <p id="beta-hint">Scan with your camera to open on your iPhone.</p>
+  <p class="already">Already on your iPhone?</p>
   <a class="button beta open" href="https://testflight.apple.com/join/wKgCeqm5">Open in TestFlight</a>
   <div class="row">
     <button class="link" type="button" id="beta-close">Close</button>
