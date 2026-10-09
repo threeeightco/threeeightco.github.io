@@ -29,13 +29,12 @@
   /* Beta: a white pill where the badge was. It opens a small sheet with a QR code to scan
      with an iPhone, and the TestFlight link for anyone already on one. */
   .button.beta { background: var(--ink); color: var(--paper); }
-  /* The sheet hugs the QR tile, so the gap above it matches the gap at its sides. */
-  .qr-sheet { width: min(274px, calc(100vw - 32px)); padding: var(--s4); border: 1px solid var(--line);
+  .qr-sheet { width: min(360px, calc(100vw - 32px)); padding: var(--s4); border: 1px solid var(--line);
     border-radius: 24px; background: var(--surface); color: var(--ink); text-align: center; }
   .qr-sheet::backdrop { background: rgba(0, 0, 0, 0.6); backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px); }
-  /* On windows too short for the whole sheet, only the QR shrinks, so the sheet fits without scrolling.
-     Everything but the QR takes ~316px including the browser's dialog margin. */
-  .qr-sheet .qr { width: min(100%, calc(100dvh - 320px)); min-width: 120px; margin: 0 auto; padding: 12px; border-radius: 16px; background: #fff; }
+  /* On windows too short for the whole sheet, only the QR shrinks, so the sheet never scrolls. */
+  .qr-sheet .qr { width: min(200px, calc(100dvh - 320px)); min-width: 120px; margin: 0 auto; padding: 12px; border-radius: 16px; background: #fff; }
+  /* height: auto keeps the image square; its 200px height attribute otherwise stretched the white tile taller than wide. */
   .qr-sheet .qr img { width: 100%; height: auto; image-rendering: pixelated; }
   .qr-sheet p { color: var(--muted); font-size: 15px; margin-top: var(--s3); text-wrap: pretty; }
   .qr-sheet .or { display: flex; align-items: center; gap: var(--s3); margin-top: var(--s4);
