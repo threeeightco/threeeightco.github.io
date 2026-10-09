@@ -3,9 +3,9 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Splitter: see what’s waiting and where</title>
+<title>Notification Splitter: see what’s waiting and where</title>
 <meta name="description" content="Separate notification badges for each Gmail account and Slack workspace on your iPhone Home Screen, organized however you like.">
-<meta property="og:title" content="Splitter">
+<meta property="og:title" content="Notification Splitter">
 <meta property="og:description" content="See what’s waiting and where. Separate notification badges for each Gmail account and Slack workspace, organized however you like.">
 <meta property="og:image" content="https://threeeightco.github.io/splitter/assets/icon.png">
 <meta name="theme-color" content="#050506">
@@ -28,7 +28,15 @@
   @media (max-width: 560px) { .store-badge img { height: 44px; } }
   /* Beta: a white pill where the badge was. It opens a small sheet with a QR code to scan
      with an iPhone, and the TestFlight link for anyone already on one. */
-  .button.beta { background: var(--ink); color: var(--paper); }
+  .button.beta { background: var(--ink); color: var(--paper); white-space: nowrap; }
+  /* On phones the longer name and the button share one row: both shrink a little and neither wraps. */
+  @media (max-width: 560px) {
+    .nav-brand { font-size: 15px; white-space: nowrap; }
+    .nav-brand img { width: 28px; height: 28px; border-radius: 7px; }
+    .button.beta { font-size: 14px; padding: 9px 14px; }
+  }
+  /* The smallest phones have no room for both on one line, so the name wraps instead. */
+  @media (max-width: 359px) { .nav-brand { white-space: normal; line-height: 1.15; } }
   /* --qr is the QR tile's width. */
   .qr-sheet { --qr: max(120px, min(200px, calc(100dvh - 324px)));
     width: min(360px, calc(100vw - 32px)); padding: 28px var(--s4) var(--s4); border: 1px solid var(--line);
@@ -152,7 +160,7 @@
 <header class="stage">
   <div class="page">
     <nav class="nav">
-      <a class="nav-brand" href="./"><img src="assets/icon.png" alt="">Splitter</a>
+      <a class="nav-brand" href="./"><img src="assets/icon.png" alt="">Notification Splitter</a>
       <!-- App Store badge, hidden during the beta. To restore it, put this back in place of the Test the beta button:
       <span class="store-badge"><img src="../kit/app-store-badge.svg" alt="Download on the App Store" height="52"></span>
       -->
